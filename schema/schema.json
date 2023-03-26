@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Duckmart Segmentation API Schema",
+  "type": "object",
+  "properties": {
+    "segmentBy": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "object",
+          "description": "Supports multiple values.",
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 1
+            },
+            "min": { "type": "number" },
+            "max": { "type": "number" }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        },
+        "name": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "gender": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["male", "female", "non-binary"]
+          },
+          "minItems": 1
+        },
+        "location": {
+          "type": "array",
+          "description": "Here, location refers to country.",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "signup_timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "subscription_plan": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["free", "plus"]
+          },
+          "minItems": 1
+        },
+        "device_type": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["desktop", "mobile", "other"]
+          },
+          "minItems": 1
+        },
+
+        "event": {
+          "type": "object",
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "login",
+                  "purchase_made",
+                  "added_to_cart",
+                  "item_viewed",
+                  "search_performed",
+                  "review_posted",
+                  "cart_abandoned",
+                  "logout"
+                ]
+              },
+              "minItems": 1
+            },
+            "min": { "type": "number" },
+            "max": { "type": "number" }
+          },
+          "additionalProperties": false,
+          "required": ["values"]
+        },
+        "event_timestamp": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "outputFields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "user_id",
+          "name",
+          "age",
+          "gender",
+          "location",
+          "signup_timestamp",
+          "subscription_plan",
+          "device_type",
+          "event_id",
+          "event",
+          "event_timestamp"
+        ]
+      },
+      "minItems": 1
+    },
+    "orderBy": {
+      "type": "object",
+      "properties": {
+        "criteria": {
+          "type": "string",
+          "enum": [
+            "user_id",
+            "name",
+            "age",
+            "gender",
+            "location",
+            "signup_timestamp",
+            "subscription_plan",
+            "device_type",
+            "event_id",
+            "event",
+            "event_timestamp"
+          ]
+        },
+        "order": { "type": "string", "enum": ["ascending", "descending"] }
+      },
+      "additionalProperties": false,
+      "required": ["criteria"]
+    },
+    "limit": {
+      "type": "number",
+      "description": "Limit of rows in response. MAX 200"
+    },
+    "offset": {
+      "type": "number",
+      "description": "Offset for pagination"
+    }
+  },
+  "additionalProperties": false,
+
+  "$defs": {
+    "timestamp": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "object",
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": { "type": "string", "format": "date" },
+              "minItems": 1
+            },
+            "min": { "type": "string", "format": "date" },
+            "max": { "type": "string", "format": "date" }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": { "type": "string", "format": "time" },
+              "minItems": 1
+            },
+            "min": { "type": "string", "format": "time" },
+            "max": { "type": "string", "format": "time" }
+          },
+          "additionalProperties": false,
+          "minProperties": 1
+        }
+      },
+      "additionalProperties": false,
+      "required":["date"]
+      
+    }
+  }
+}
